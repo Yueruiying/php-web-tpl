@@ -1,5 +1,6 @@
 <?php
 require_once './db.php';
+error_reporting(0); // 错误不输出
 $error_msg = null;
 if ( isset($_POST['uname']) && isset($_POST['passwd']) && isset($_POST['company']) ) {
     global $db_link;
@@ -56,7 +57,17 @@ if ( isset($_POST['uname']) && isset($_POST['passwd']) && isset($_POST['company'
             -webkit-background-size: cover;
             background-size: cover;
         }
-        .login-panel {
+        .middle-outer {
+            display: table;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+        }
+        .vmiddle {
+            display: table-cell;
+            vertical-align: middle;
+        }
+        .signup-panel {
             margin: 0 auto;
             width: 500px;
             background-color: #fff;
@@ -65,27 +76,102 @@ if ( isset($_POST['uname']) && isset($_POST['passwd']) && isset($_POST['company'
             -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
             box-shadow: 0 1px 1px rgba(0,0,0,.05);
             
-            padding: 50px 40px 40px;
+            padding: 30px 40px;
+        }
+        .panel-title-text {
+            border-bottom: 2px solid #e4eaec;
+            padding-bottom: 15px;
+        }
+        .signup-form{
+            margin: 20px 0 20px;
+        }
+        .signup-form .form-cell {
+            position: relative;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .signup-form .floating-label {
+            color: #62a8ea;
+            top: 8px;
+            font-size: 14px;
+        }
+        .signup-form .input-text {
+            padding: 0;
+            width: 100%;
+            border: none;
+            height: 36px;
+            font-size: 14px;
+            background-image: linear-gradient(#62a8ea, #62a8ea), linear-gradient(#e4eaec, #e4eaec);
+            background-position: center bottom, center calc(100% - 1px);
+            background-size: 0 2px, 100% 1px;
+            background-color: rgba(0, 0, 0, 0);
+            background-repeat: no-repeat;
+        }
+        .signup-form .input-text:focus {
+            outline: none;
+        }
+        .form-action .btn-action {
+            color: #fff;
+            background-color: #62a8ea;
+            border-color: #62a8ea;
+            padding: 10px 18px;
+            font-size: 18px;
+            line-height: 1.3333333;
+            border-radius: 4px;
+            display: block;
+            width: 100%;
+            margin-top: 40px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .text-danger {
+            color: #F66239;
+        }
+        a {
+            color: #62a8ea;
+            text-decoration: none;
         }
     </style>
 </head>
 <body>
     <div class="middle-outer">
         <div class="vmiddle">
-            <div class="login-panel">
-                <form action="signup.php" method="post">
-                    登录邮箱：<input type="text" name="uname" />
-                    公司名称：<input type="text" name="company" />
-                    昵称：<input type="text" name="nickname" />
-                    密码：<input type="password" name="passwd" />
-                    密码确认：<input type="password" name="repasswd" />
-                    <button type="submit">注册</button>
+            <div class="signup-panel">
+            <h2 class="panel-title-text">会员注册</h2>
+                <form class="signup-form" action="signup.php" method="post">
+                    <div class="form-cell">
+                        <label class="floating-label">登录邮箱：</label>
+                        <input class="input-text" type="text" name="uname">
+                    </div>
+                    <div class="form-cell">
+                        <label class="floating-label">公司名称：</label>
+                        <input class="input-text" type="text" name="company">
+                    </div>
+                    <div class="form-cell">
+                        <label class="floating-label">昵称：</label>
+                        <input class="input-text" type="text" name="nickname">
+                    </div>
+                    <div class="form-cell">
+                        <label class="floating-label">密码：</label>
+                        <input class="input-text" type="password" name="passwd">
+                    </div>
+                    <div class="form-cell">
+                        <label class="floating-label">密码确认：</label>
+                        <input class="input-text" type="password" name="repasswd">
+                    </div>
+                    <div class="form-action">
+                        <button class="btn-action" type="submit">注册</button>
+                    </div>
                     <?php
                         if  ( $error_msg ) {
                             echo "<p class=\"text-center text-danger\">$error_msg</p>";
                         }
                     ?>
                 </form>
+                <p class="text-center">
+                    已有账号? 去 <a href="signin.php">登录</a>
+                </p>
             </div>
         </div>
     </div>

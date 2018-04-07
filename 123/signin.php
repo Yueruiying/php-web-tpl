@@ -1,36 +1,25 @@
 <?php
 require_once './db.php';
-
-error_reporting(0); // 错误不输出
-
+error_reporting(0); 
 $error_msg = null;
-
-// isset 判断变量存不存在
-
 if ( isset($_POST['uname']) && isset($_POST['passwd']) ) {
-    global $db_link;
     $uname = $_POST['uname'];
     $upasswd = $_POST['passwd'];
     // 防止 sql 注入，和 XSS 攻击
-    // 如果用户名h或密码是  ' or 1 = 1 or '
-    // 例如如下语句会导致sql注入攻击 select id, uname, passwd, nick_name, company_name from user where uname = '' or 1 = 1 or '' = '' and passwd = '' limit 1;
-    $q_uname = mysqli_real_escape_string($db_link, $uname);
-    $q_passwd = mysqli_real_escape_string($db_link, $upasswd);
+    $q_uname = mysqli_real_escape_string($conn, $uname);
+    $q_passwd = mysqli_real_escape_string($conn, $upasswd);
     // 查询当账户名密码一致的结果
-    $res = query("select id, uname, passwd, nick_name, company_name from user where uname = '$q_uname' and passwd = '$q_passwd' limit 1");
+    $res = query("select id, uname, passwd, nick_name, company_name from user where uname = '$uname' and passwd = '$q_passwd' limit 1");
     if ( count($res) > 0 ) {
         $current_user = $res[0];
         $_SESSION['user_id'] = $current_user['id'];
         $_SESSION['uname'] = $current_user['uname'];
         $_SESSION['nick_name'] = $current_user['nick_name'];
         $_SESSION['company_name'] = $current_user['company_name'];
-        header('Location: /index.php'); // 302 临时跳转
-        exit();
+        header('Location: /index.php');
     } else {
         $error_msg = '用户名或密码错误';
     }
-} else {
-    $error_msg = '用户名或密码不能为空';
 }
 ?>
 <!DOCTYPE html>
@@ -81,15 +70,22 @@ if ( isset($_POST['uname']) && isset($_POST['passwd']) ) {
         }
         .login-form .input-text {
             padding: 0;
+            
             width: 100%;
+
             border: none;
+
             height: 36px;
             font-size: 14px;
+
             background-image: linear-gradient(#62a8ea, #62a8ea), linear-gradient(#e4eaec, #e4eaec);
             background-position: center bottom, center calc(100% - 1px);
             background-size: 0 2px, 100% 1px;
+
             background-color: rgba(0, 0, 0, 0);
             background-repeat: no-repeat;
+
+            
         }
         .login-form .input-text:focus {
             outline: none;
@@ -98,12 +94,15 @@ if ( isset($_POST['uname']) && isset($_POST['passwd']) ) {
             color: #fff;
             background-color: #62a8ea;
             border-color: #62a8ea;
+
             padding: 10px 18px;
             font-size: 18px;
             line-height: 1.3333333;
             border-radius: 4px;
+            
             display: block;
             width: 100%;
+            
             margin-top: 40px;
         }
         .middle-outer {
@@ -132,7 +131,7 @@ if ( isset($_POST['uname']) && isset($_POST['passwd']) ) {
             text-decoration: none;
         }
         .panel-title-text {
-            border-bottom: 2px solid #e4eaec;
+            border-bottom: 1px solid #e4eaec;
             padding-bottom: 15px;
         }
     </style>
